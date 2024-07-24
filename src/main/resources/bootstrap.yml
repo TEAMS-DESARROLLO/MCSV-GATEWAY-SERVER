@@ -1,0 +1,86 @@
+server:
+    port: 7001
+    # error:
+    #   include-message: always
+
+
+eureka:
+    client:
+        serviceUrl:
+            defaultZone:  ${EUREKA_SERVER:http://localhost:8761/eureka}        
+    instance:
+        #instanceId: ${spring.application.name}:{server.port}    
+        instanceId: ${spring.application.name}
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty.http.client: DEBUG
+    
+spring:
+    application:
+        name: gateway-server
+    cloud:
+        gateway: 
+          default-filters:
+            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+          globalcors:
+            cors-configurations:
+              '[/**]':
+                allowedOrigins: "*"
+                allowedMethods: "*"
+                allowedHeaders: "*"
+          routes: 
+              - id: mcsv-calculo
+                # uri: lb://mcsv-calculo
+                uri: http://localhost:9060
+                predicates: 
+                  - Path=/calculo/** 
+                filters:
+                  - AuthenticationFiltering
+
+              - id: mcsv-test
+                # uri: lb://mcsv-calculo
+                uri: http://localhost:9061
+                predicates: 
+                  - Path=/test/**                   
+                filters: 
+                  - AuthenticationFiltering
+
+              - id: mcsv-maestros
+                uri: lb://mcsv-maestros
+                #uri: http://localhost:9061
+                predicates: 
+                  - Path=/tipodocumentoidentidad/**,/tipovia/**,/via/**,/sector/**,/paquete/**,/almacen/**
+                filters: 
+                  - AuthenticationFiltering
+
+              - id: mcsv-master
+                uri: lb://mcsv-master
+                #uri: http://localhost:9091
+                predicates: 
+                  - Path=/community/**,/leader/**,/functionalLeader/**,/rol/**,/collaborator/**
+                filters: 
+                  - AuthenticationFiltering
+
+              - id: mcsv-cliente
+                uri: lb://mcsv-cliente
+                predicates: 
+                  - Path=/cliente/**                  
+                filters: 
+                  - AuthenticationFiltering
+
+
+              - id: mcsv-auth-server
+                uri: lb://mcsv-auth-server
+                #uri: lb://mcsv-auth-server:9007
+                #uri: http://localhost:9007
+                predicates: 
+                  - Path=/auth/**
+  
+
+                
+              # - id: mcsv-security
+              #   uri: http://localhost:9007
+              #   predicates:
+              #     - Path=/auth/**

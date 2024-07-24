@@ -1,0 +1,38 @@
+ARG MCSV_NAME=mcsv-gateway-proxy
+ARG MCSV_FOLDER_ORIGEN=gateway-proxy
+
+FROM --platform=linux/x86_64 openjdk:17-jdk-alpine as builder
+RUN addgroup -S spring && adduser -S spring -G spring
+
+ARG MCSV_NAME
+ARG MCSV_FOLDER_ORIGEN
+
+WORKDIR /app/$MCSV_NAME
+
+COPY ./pom.xml /app
+COPY ./$MCSV_FOLDER_ORIGEN/.mvn ./.mvn
+COPY ./$MCSV_FOLDER_ORIGEN/mvnw .
+COPY ./$MCSV_FOLDER_ORIGEN/pom.xml .
+
+RUN ./mvnw dependency:go-offline
+COPY ./$MCSV_FOLDER_ORIGEN/src ./src
+
+RUN ./mvnw clean package -DskipTests
+
+FROM --platform=linux/x86_64  openjdk:17-jdk-alpine 
+ARG MCSV_NAME
+WORKDIR /app
+
+ARG TARGET_FOLDER=/app/$MCSV_NAME/target
+ARG NOMBRE_JAR=gateway-0.0.1-SNAPSHOT
+
+COPY --from=builder $TARGET_FOLDER/gateway-0.0.1-SNAPSHOT.jar .
+
+ENV PORT 7001
+ENV JAVA_OPTS  "-Dspring.profiles.active=dev -Deureka.client.serviceUrl.defaultZone=http://mcsv-eureka-server:8761/eureka"
+ENV EUREKA_SERVER="http://mcsv-eureka-server:8761/eureka"
+
+EXPOSE $PORT
+
+ENTRYPOINT ["java","-jar","gateway-0.0.1-SNAPSHOT.jar","--eureka.client.serviceUrl.defaultZone=${EUREKA_SERVER}"]
+
