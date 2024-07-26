@@ -59,7 +59,7 @@ spring:
                 uri: lb://mcsv-master
                 #uri: http://localhost:9091
                 predicates: 
-                  - Path=/community/**,/leader/**,/functionalLeader/**,/rol/**,/collaborator/**
+                  - Path=/community/**,/leader/**,/functionalLeader/**,/rol/**,/collaborator/**,/statuscollaborator/**
                 filters: 
                   - AuthenticationFiltering
 

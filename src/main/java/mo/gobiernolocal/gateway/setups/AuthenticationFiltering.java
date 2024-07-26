@@ -1,16 +1,12 @@
 package mo.gobiernolocal.gateway.setups;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.OrderedGatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
+
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -20,7 +16,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 
 import lombok.extern.slf4j.Slf4j;
-import reactor.core.publisher.Mono;
+
 
 
 @Slf4j
