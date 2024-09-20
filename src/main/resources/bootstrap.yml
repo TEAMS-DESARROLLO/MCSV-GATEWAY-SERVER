@@ -59,7 +59,7 @@ spring:
                 uri: lb://mcsv-training
                 #uri: http://localhost:9061
                 predicates: 
-                  - Path=/registration/**
+                  - Path=/registration/**, /registrationFollow/**
                 filters: 
                   - AuthenticationFiltering                  
 
