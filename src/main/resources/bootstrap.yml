@@ -67,7 +67,7 @@ spring:
               - id: mcsv-auth-server
                 uri: lb://mcsv-auth-server
                 #uri: lb://mcsv-auth-server:9007
-                #uri: http://localhost:9007
+                #uri: http://localhost:9007 --
                 predicates: 
                   - Path=/auth/**, /user/**, /role/**
   
