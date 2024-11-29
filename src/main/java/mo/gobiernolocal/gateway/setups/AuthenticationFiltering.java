@@ -41,7 +41,7 @@ public class AuthenticationFiltering extends AbstractGatewayFilterFactory < Auth
 
             return new OrderedGatewayFilter((exchange,chain) -> {
                 if ( !exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION))  {
-                    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No existe autorizacio en la cabecera");
+                    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No existe autorizacion en la cabecera");
                     
                 }
                 @SuppressWarnings("null")
@@ -76,48 +76,7 @@ public class AuthenticationFiltering extends AbstractGatewayFilterFactory < Auth
 
             }, 1);
 
-            // return (exchange,chain) -> {
-            
-            //    if ( !exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION))  {
-            //         throw new RuntimeException("No existe informacion de AUTORIZACION-");
-            //     }
-
-    
-            //     @SuppressWarnings("null")
-            //     String authHeader = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
-    
-            //     String[] parts = authHeader.split(" ");
-            //     if(parts.length != 2 || !"Bearer".equals(parts[0]) ){
-            //         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No existe autorizacio en la cabecera");
-                    
-            //     }
-            //     //String url = "http://mcsv-auth-server/auth/isValidToken/token=" + parts[1];
-            //     String url = "http://mcsv-auth-server/auth/isValidToken";
-
-            //     //HttpHeaders headers = new HttpHeaders();
-            //     //headers.add("Content-Type", "application/json");
-            //     //headers.add("Authorization", authHeader);                
-    
-               
-            //     Mono<Void> rtn = webClientBuilder.baseUrl(url).build()
-            //         .get()
-            //         .uri(url ).header(HttpHeaders.AUTHORIZATION, parts[1])
-            //         //.headers(h -> h.addAll(headers))
-            //         .retrieve()
-            //         .bodyToMono( JsonNode.class)
-            //         .map(dto ->  {
-                        
-            //             exchange.getRequest()
-            //             .mutate()
-            //             .header("x-auth-user-id", "retorno");
-                        
-            //             return exchange;
-                        
-            //         })
-
-            //         .flatMap(chain::filter) ;
-
-            //      return rtn;
+  
      
             };
 

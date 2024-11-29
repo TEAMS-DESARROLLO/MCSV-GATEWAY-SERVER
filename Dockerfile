@@ -5,5 +5,5 @@ FROM --platform=linux/x86_64  openjdk:17-jdk-alpine
 
 WORKDIR /app
 EXPOSE 7001
-COPY *.jar /app/gateway-proxy-1.0.1.jar 
+COPY /target/*.jar /app/gateway-proxy-1.0.1.jar 
 ENTRYPOINT ["java","-jar","/app/gateway-proxy-1.0.1.jar"]
