@@ -66,11 +66,25 @@ spring:
 
               - id: mcsv-auth-server
                 uri: lb://mcsv-auth-server
+                predicates: 
+                  - Path=/auth/**
+                filters: []
+
+              - id: mcsv-auth-server-user-role
+                uri: lb://mcsv-auth-server
+                predicates: 
+                  - Path=/user/**, /role/**
+                filters: 
+                  - AuthenticationFiltering
+
+              # - id: mcsv-auth-server
+              #   uri: lb://mcsv-auth-server
                 #uri: lb://mcsv-auth-server:9007
                 #uri: http://localhost:9007 --
-                predicates: 
-                  - Path=/auth/**, /user/**, /role/**
-  
+                # predicates: 
+                #   - Path=/auth/**, /user/**, /role/**
+                # filters: 
+                #  - AuthenticationFiltering
 
                 
               # - id: mcsv-security
